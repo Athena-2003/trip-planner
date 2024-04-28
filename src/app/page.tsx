@@ -10,28 +10,11 @@ interface IconProps {
 }
 
 export default function Component() {
-  const [inputData, setinputData] = useState('')
-  
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setinputData(event.target.value)
-  }
-
-  const handleSubmit = () => {
-    const data = inputData;
-    axios.post('/api/search', data)
-            .then(response  => {
-                console.log('Response:', response.data);
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
-  }
-
   return (
-        <div className="relative">
+    <div className="relative">
       <img
         alt="Background"
-        className="absolute inset-0 object-cover w-full h-screen"
+        className="absolute inset-0 object-cover w-full h-full"
         height="710"
         src="/night-sky.png"
         style={{
@@ -51,9 +34,9 @@ export default function Component() {
               About Us
             </Link>
             <Button className="bg-orange-500 text-white">
-            <Link className="text-white" href="/map">
-             Explore Maps
-            </Link>
+              <Link className="text-white" href="/map">
+                Explore Maps
+              </Link>
             </Button>
           </div>
         </nav>
@@ -66,6 +49,11 @@ export default function Component() {
               <SearchIcon className="text-white" />
             </Button>
             */}
+            <Button className="bg-orange-500 text-white p-8 font-bold text-2xl">
+              <Link className="text-white" href="/map">
+                Plan Trip  
+              </Link>
+            </Button>
           </div>
         </div>
         <div className="container mx-auto px-6 py-12">
@@ -79,7 +67,7 @@ export default function Component() {
               <img
                 alt="River Top Deals"
                 className="rounded-lg"
-                height="200"
+                height="150"
                 src="/p1.jpg"
                 style={{
                   // aspectRatio: "300/200",
@@ -138,7 +126,6 @@ function ChevronLeftIcon(props: IconProps) {
     </svg>
   )
 }
-
 
 function ChevronRightIcon(props: IconProps) {
   return (
