@@ -50,7 +50,7 @@ export default function Component() {
             </Button>
             */}
             <Button className="bg-orange-500 text-white p-8 font-bold text-2xl">
-              <Link className="text-white" href="/map">
+              <Link className="text-white" href="/form">
                 Plan Trip  
               </Link>
             </Button>
