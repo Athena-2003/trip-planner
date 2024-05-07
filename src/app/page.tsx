@@ -1,9 +1,10 @@
 'use client'
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { useState } from 'react'
-import axios from 'axios'
+import ReactPlayer from "react-player"
+// import { Input } from "@/components/ui/input"
+// import { useState } from 'react'
+// import axios from 'axios'
 
 interface IconProps {
   className: string,
@@ -12,20 +13,11 @@ interface IconProps {
 export default function Component() {
   return (
     <div className="relative">
-      <img
-        alt="Background"
-        className="absolute inset-0 object-cover w-full h-full"
-        height="710"
-        src="/night-sky.png"
-        style={{
-          aspectRatio: "913/710",
-          objectFit: "cover",
-        }}
-        width="913"
-      />
+     <video src="/montage.mp4" className="h-full w-screen absolute inset-0 object-cover -z-50" autoPlay muted controls={false} loop playsInline></video> 
+      <div className="absolute inset-0 bg-black opacity-50"></div>
       <div className="relative bg-opacity-50 h-full">
         <nav className="container mx-auto px-6 py-8 flex justify-between items-center">
-          <h1 className="text-4xl font-bold text-white">TRIP</h1>
+          <h1 className="text-4xl font-bold text-white"><a href="/">TRIPY</a></h1>
           <div className="flex items-center space-x-8">
             <Link className="text-white" href="#">
               Discover

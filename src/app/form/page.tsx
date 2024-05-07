@@ -1,94 +1,123 @@
 'use client'
 import axios from 'axios';
-import { useEffect, useState } from 'react'
-import { Input } from "@/components/ui/input"
+import { useEffect, useState } from 'react';
+import { Input } from "@/components/ui/input";
 import { Button } from '@/components/ui/button';
-
+import Link from 'next/link';
 
 export default function Form() {
-  const [location, setLocation] = useState();
-  const [deslat, setDeslat] = useState();
-  const [deslon, setDeslon] = useState();
+  const [starttime, setStarttime] = useState("");
+  const [endtime, setEndtime] = useState("");
   const [flag, setFlag] = useState(false);
   const [result, setResult] = useState(null);
+  const [search, setSearch] = useState("");
+  const [showTimeInputs, setShowTimeInputs] = useState(false);
 
-  console.log(location)
-
-  const fetchApiData = async ({ latitude, longitude }) => {
-    const body = { "lat": latitude, "lon": longitude }
-    const res = await axios.post("/api/poi", body)
-  }
-
-  const lat = (e) => {
-    setDeslat(e.target.value)
-  }
-
-  const lon = (e) => {
-    setDeslon(e.target.value)
-  }
-
-  useEffect(() => {
-    if ('geolocation' in navigator) {
-      navigator.geolocation.getCurrentPosition(({ coords }) => {
-        const { latitude, longitude } = coords;
-        setLocation({ latitude, longitude })
-      })
+  const searchDestination = async () => {
+    try {
+      const searchjson = { "loc": search };
+      const response = await axios.post(`/api/search`, searchjson);
+      setResult(response.data);
+      setShowTimeInputs(true);
+    } catch (error) {
+      console.error("Error searching destination:", error);
     }
-  }, [])
+  }
 
-  useEffect(() => {
-    if (location) {
-      fetchApiData(location);
-    }
-  }, [location]);
+  const start = (e) => {
+    setStarttime(e.target.value)
+  }
+
+  const end = (e) => {
+    setEndtime(e.target.value)
+  }
+
+  const searchloc = (e) => {
+    setSearch(e.target.value)
+  }
 
   const submit = async () => {
-    const desloc = { "lat": deslat, "lon": deslon }
-    const result = await axios.post("/api/poi", desloc)
-    console.log(result)
-    setFlag(true)
-    setResult(result.data)
+    const timeslot = { "start": starttime, "end": endtime , "lat": result.lat , "lon": result.lon};
+    try {
+      const response = await axios.post("/api/poi", timeslot);
+      setResult(response.data);
+      setFlag(true);
+    } catch (error) {
+      console.error("Error submitting time slots:", error);
+    }
   }
 
   return (
-    <>
-      <div className='text-center p-6'>
-        Hello, please fill the form
+    <div className='h-screen relative'>
+     <video src="/montage.mp4" className="h-full w-screen absolute inset-0 object-cover -z-50" autoPlay muted controls={false} loop playsInline></video> 
+      <div className="absolute inset-0 bg-black opacity-50"></div>
+      <div className="relative bg-opacity-50 h-full">
+      <nav className="container mx-auto px-6 py-8 flex justify-between items-center">
+        <h1 className="text-4xl font-bold text-white"><a href='/'>TRIPY</a></h1>
+        <div className="flex items-center space-x-8">
+          <Link className="text-white" href="#">
+            Discover
+          </Link>
+          <Link className="text-white" href="#">
+            About Us
+          </Link>
+          <Button className="bg-orange-500 text-white">
+            <Link className="text-white" href="/map">
+              Explore Maps
+            </Link>
+          </Button>
+        </div>
+      </nav>
+      <div className='text-center p-6 text-white'>
+        Ahoy!!, Please Enter your destination.
       </div>
-      <div className='flex flex-row justify-center gap-4 p-6'>
-        <Input value={deslat} onChange={lat} className='w-96' placeholder='Latitude' />
-        <Input value={deslon} onChange={lon} className='w-96' placeholder='Longitude' />
-      </div>
-      <div className='flex justify-center m-auto'>
-        <Button onClick={submit}> Submit </Button>
-      </div>
+      {!showTimeInputs && (
+        <div className='flex flex-col justify-center items-center text-center gap-4 p-6 m-auto'>
+          <Input value={search} onChange={searchloc} className='w-96' placeholder='Destination' />
+          <Button className='bg-orange-500' onClick={searchDestination}>Search</Button>
+        </div>
+      )}
+      {showTimeInputs && (
+        <div className='flex flex-col justify-center items-center text-center gap-4 p-6 m-auto'>
+          <Input value={starttime} onChange={start} className='w-96' placeholder='Start Time in 24hr format' />
+          <Input value={endtime} onChange={end} className='w-96' placeholder='End Time in 24hr format' />
+          <Button className='bg-orange-500' onClick={submit}>Submit</Button>
+        </div>
+      )}
       <div className='m-8'>
-        {
-          (flag&&result) && <ActivityTable result={result} /> 
-        }
+        {(flag && result) && <ActivityTable result={result} />}
       </div>
-    </>
+    </div>
+    </div>
   );
 }
 
 function ActivityTable({ result }) {
   return (
-    <table className="w-full border-collapse border border-gray-200">
-      <thead>
-        <tr className="bg-gray-100">
-          <th className="px-4 py-2">Time</th>
-          <th className="px-4 py-2">Activity</th>
-        </tr>
-      </thead>
-      <tbody>
-        {Object.entries(result).map(([time, activity]) => (
-          <tr key={time} className="border-b border-gra-200">
-            <td className="px-4 py-2">{time}</td>
-            <td className="px-4 py-2">{activity}</td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
+    <div className="container mx-auto px-4 opacity-80">
+      <div className="bg-white shadow-md rounded-lg my-6">
+        <table className="w-full border-collapse border border-black text-center rounded-lg">
+          <thead>
+            <tr className="border-black rounded-t-lg">
+              <th className="px-4 py-2 bg-gray-200 rounded-tl-lg">Time</th>
+              <th className="px-4 py-2 bg-gray-200 rounded-tr-lg">Activity</th>
+            </tr>
+          </thead>
+          <tbody>
+            {Object.entries(result).map(([time, activity]) => (
+              <tr
+                key={time}
+                className="border-b border-gray-300 hover:bg-gray-100 transition-colors duration-300"
+              >
+                <td className="px-4 py-2">{time}</td>
+                <td className="px-4 py-2">{activity}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
   );
 }
+
 
