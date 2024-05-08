@@ -16,6 +16,10 @@ export async function POST(request: Request) {
     const museum = await axios.get(`https://api.tomtom.com/search/2/categorySearch/museum.json?lat=${lat}&lon=${lon}&view=IN&openingHours=nextSevenDays&timeZone=iana&relatedPois=off&key=${apiKey}`)
     const cinema = await axios.get(`https://api.tomtom.com/search/2/categorySearch/cinema.json?lat=${lat}&lon=${lon}&view=IN&openingHours=nextSevenDays&timeZone=iana&relatedPois=off&key=${apiKey}`)
     const shop = await axios.get(`https://api.tomtom.com/search/2/categorySearch/market.json?lat=${lat}&lon=${lon}&view=IN&openingHours=nextSevenDays&timeZone=iana&relatedPois=off&key=${apiKey}`)
+    
+    // if( start > end) {
+    //     return new Response(JSON.stringify({"message": "Wrong time format"}))
+    // }
 
     let result = {
         "7-8": `Get Breakfast at ${restaurant.data.results[0].poi.name}`,
@@ -31,7 +35,6 @@ export async function POST(request: Request) {
         "Rest": `Get back to your room and sleep tight`,
     }
 
-    
     let response = {};
     for (let slot in result) {
         let [slotStart, slotEnd] = slot.split("-");

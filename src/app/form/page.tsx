@@ -55,10 +55,10 @@ export default function Form() {
       <nav className="container mx-auto px-6 py-8 flex justify-between items-center">
         <h1 className="text-4xl font-bold text-white"><a href='/'>TRIPY</a></h1>
         <div className="flex items-center space-x-8">
-          <Link className="text-white" href="#">
+          <Link className="text-white" href="https://www.youtube.com/shorts/SXHMnicI6Pg">
             Discover
           </Link>
-          <Link className="text-white" href="#">
+          <Link className="text-white" href="https://www.youtube.com/shorts/SXHMnicI6Pg#">
             About Us
           </Link>
           <Button className="bg-orange-500 text-white">

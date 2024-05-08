@@ -1,7 +1,10 @@
 'use client'
+// import axios from 'axios'
 import React, { useRef, useEffect, useState } from 'react';
 import * as maptilersdk from '@maptiler/sdk';
 import "@maptiler/sdk/dist/maptiler-sdk.css";
+// import { Input } from "@/components/ui/input";
+// import { Button } from '@/components/ui/button';
 import './map.css';
 
 interface Coordinates {
@@ -18,6 +21,7 @@ export default function Map() {
   const [zoom] = useState<number>(16);
   const apiKey = process.env.NEXT_PUBLIC_MAPTILER;
   const [marker, setMarker] = useState<maptilersdk.Marker | null>(null);
+  // const [search, setSearch] = useState()
 
   console.log(location)
 
@@ -29,6 +33,20 @@ export default function Map() {
       })
     }
   }, [])
+
+  // const searchloc = (e) => {
+  //   setSearch(e.target.value)
+  // }
+
+  // const searchDestination = async () => {
+  //   try {
+  //     const searchjson = { "loc": search };
+  //     const response = await axios.post(`/api/search`, searchjson);
+  //     setLocation(response.data);
+  //   } catch (error) {
+  //     console.error("Error searching destination:", error);
+  //   }
+  // }
 
   useEffect(() => {
     if (map.current) return;
@@ -51,9 +69,9 @@ export default function Map() {
   }, [location]);
 
   return (
-    <div className="map-wrap">
-      <div ref={Mapcontainer} className="map" />
-    </div>
+      <div className="map-wrap">
+        <div ref={Mapcontainer} className="map" />
+      </div>
   )
 }
 
