@@ -37,7 +37,7 @@ export default function Form() {
   }
 
   const submit = async () => {
-    const timeslot = { "start": starttime, "end": endtime , "lat": result.lat , "lon": result.lon};
+    const timeslot = { "start": starttime, "end": endtime, "lat": result.lat, "lon": result.lon };
     try {
       const response = await axios.post("/api/poi", timeslot);
       setResult(response.data);
@@ -49,45 +49,45 @@ export default function Form() {
 
   return (
     <div className='h-screen relative'>
-     <video src="/montage.mp4" className="h-full w-screen absolute inset-0 object-cover -z-50" autoPlay muted controls={false} loop playsInline></video> 
+      <video src="/montage.mp4" className="h-full w-screen absolute inset-0 object-cover -z-50" autoPlay muted controls={false} loop playsInline></video>
       <div className="absolute inset-0 bg-black opacity-50"></div>
       <div className="relative bg-opacity-50 h-full">
-      <nav className="container mx-auto px-6 py-8 flex justify-between items-center">
-        <h1 className="text-4xl font-bold text-white"><a href='/'>TRIPY</a></h1>
-        <div className="flex items-center space-x-8">
-          <Link className="text-white" href="https://www.youtube.com/shorts/SXHMnicI6Pg">
-            Discover
-          </Link>
-          <Link className="text-white" href="https://www.youtube.com/shorts/SXHMnicI6Pg#">
-            About Us
-          </Link>
-          <Button className="bg-orange-500 text-white">
-            <Link className="text-white" href="/map">
-              Explore Maps
+        <nav className="container mx-auto px-6 py-8 flex justify-between items-center">
+          <h1 className="text-4xl font-bold text-white"><a href='/'>TRIPY</a></h1>
+          <div className="flex items-center space-x-8">
+            <Link className="text-white" href="https://www.youtube.com/shorts/SXHMnicI6Pg">
+              Discover
             </Link>
-          </Button>
+            <Link className="text-white" href="https://www.youtube.com/shorts/SXHMnicI6Pg#">
+              About Us
+            </Link>
+            <Button className="bg-orange-500 text-white">
+              <Link className="text-white" href="/map">
+                Explore Maps
+              </Link>
+            </Button>
+          </div>
+        </nav>
+        <div className='text-center p-6 text-white'>
+          Ahoy!!, Please Enter your destination.
         </div>
-      </nav>
-      <div className='text-center p-6 text-white'>
-        Ahoy!!, Please Enter your destination.
+        {!showTimeInputs && (
+          <div className='flex flex-col justify-center items-center text-center gap-4 p-6 m-auto'>
+            <Input value={search} onChange={searchloc} className='w-96' placeholder='Destination' />
+            <Button className='bg-orange-500' onClick={searchDestination}>Search</Button>
+          </div>
+        )}
+        {showTimeInputs && (
+          <div className='flex flex-col justify-center items-center text-center gap-4 p-6 m-auto'>
+            <Input value={starttime} onChange={start} className='w-96' placeholder='Start Time in 24hr format' />
+            <Input value={endtime} onChange={end} className='w-96' placeholder='End Time in 24hr format' />
+            <Button className='bg-orange-500' onClick={submit}>Submit</Button>
+          </div>
+        )}
+        <div className='m-8'>
+          {(flag && result) && <ActivityTable result={result} />}
+        </div>
       </div>
-      {!showTimeInputs && (
-        <div className='flex flex-col justify-center items-center text-center gap-4 p-6 m-auto'>
-          <Input value={search} onChange={searchloc} className='w-96' placeholder='Destination' />
-          <Button className='bg-orange-500' onClick={searchDestination}>Search</Button>
-        </div>
-      )}
-      {showTimeInputs && (
-        <div className='flex flex-col justify-center items-center text-center gap-4 p-6 m-auto'>
-          <Input value={starttime} onChange={start} className='w-96' placeholder='Start Time in 24hr format' />
-          <Input value={endtime} onChange={end} className='w-96' placeholder='End Time in 24hr format' />
-          <Button className='bg-orange-500' onClick={submit}>Submit</Button>
-        </div>
-      )}
-      <div className='m-8'>
-        {(flag && result) && <ActivityTable result={result} />}
-      </div>
-    </div>
     </div>
   );
 }
